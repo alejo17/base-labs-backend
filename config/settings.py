@@ -88,7 +88,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'baselabs_db',
+        'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'BaseLabs123.',
         'HOST': 'database-1.ce9ya2iywawr.us-east-1.rds.amazonaws.com',
