@@ -60,6 +60,11 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173", "http://baselabs-bucket.s3-website-us-east-1.amazonaws.com/"
 ]
 
+SESSION_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_SECURE = False
+
 ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
