@@ -48,7 +48,8 @@ Backend ---> EC2
 * We need gunicorn to run server automatically as soon as the EC2 is running
     - pip install gunicorn
     - sudo nano /etc/systemd/system/gunicorn.service
-        *
+
+        ```
         [Unit]
         Description=gunicorn daemon
         After=network.target
@@ -61,7 +62,8 @@ Backend ---> EC2
 
         [Install]
         WantedBy=multi-user.target
-        *
+        ```
+    
     - sudo systemctl daemon-reload
     - START SERVER ---> sudo systemctl start gunicorn
     - CHECK STATUS ---> sudo systemctl status gunicorn
