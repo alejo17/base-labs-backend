@@ -1,11 +1,13 @@
 import json
 
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate
 from django.http import JsonResponse
 from django.db.models import Sum
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -22,22 +24,28 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
 
         if user:
-            login(request, user)
-            return JsonResponse({"success": True})
-        return JsonResponse({"success": False}, status=400)
+            refresh = RefreshToken.for_user(user)
+
+            return JsonResponse({
+                "access": str(refresh.access_token),
+                "refresh": str(refresh),
+                "username": user.username
+            })
+
+        return JsonResponse({"error": "Invalid credentials"}, status=401)
     
 
 @api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def get_user(request):
-    if request.user.is_authenticated:
-        return JsonResponse({
-            "authenticated": True,
-            "username": request.user.username
-        })
-    return JsonResponse({"authenticated": False}, status=401)
+    return JsonResponse({
+        "authenticated": True,
+        "username": request.user.username
+    })
 
 
 @api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def get_top_ten(request):
     sales = list(
         Sales.objects
@@ -81,6 +89,7 @@ def get_top_ten(request):
 
 
 @api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def get_negative_margin(request):
     sales = list(
         Sales.objects

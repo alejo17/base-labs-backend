@@ -60,11 +60,11 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173", "http://baselabs-bucket.s3-website-us-east-1.amazonaws.com/"
 ]
 
-SESSION_COOKIE_SAMESITE = "Lax"
-CSRF_COOKIE_SAMESITE = "Lax"
-
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
 
 ROOT_URLCONF = "config.urls"
 
