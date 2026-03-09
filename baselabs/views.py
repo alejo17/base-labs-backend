@@ -16,6 +16,16 @@ from baselabs.models import Sales, Purchases
 
 @csrf_exempt
 def login_view(request):
+    """
+    Function to login the user.
+
+    Args:
+        request: request instance
+
+    Returns:
+        JsonResponse: token or errors
+    """
+
     if request.method == "POST":
         data = json.loads(request.body)
         username = data.get("username")
@@ -38,6 +48,16 @@ def login_view(request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_user(request):
+    """
+    Function to check if the user exists and is authenticated.
+
+    Args:
+        request: request instance
+
+    Returns:
+        JsonResponse: authenticated=True and username
+    """
+
     return JsonResponse({
         "authenticated": True,
         "username": request.user.username
@@ -47,6 +67,13 @@ def get_user(request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_top_ten(request):
+    """
+    Function to get the top ten products depending on best profit.
+
+    Returns:
+        Response: list with profits and margins of each product
+    """
+
     sales = list(
         Sales.objects
         .values("brand", "description")
@@ -91,6 +118,13 @@ def get_top_ten(request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_negative_margin(request):
+    """
+    Function to get the negative margins of products.
+
+    Returns:
+        Response: list of top 30 products with negative margins
+    """
+
     sales = list(
         Sales.objects
         .values("brand", "description")
